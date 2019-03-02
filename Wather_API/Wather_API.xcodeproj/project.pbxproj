@@ -39,7 +39,6 @@
 			isa = PBXGroup;
 			children = (
 				66D6328C222A9A4F0084858E /* Wather_API */,
-				66D6328B222A9A4F0084858E /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -49,19 +48,29 @@
 				66D6328A222A9A4F0084858E /* Wather_API.app */,
 			);
 			name = Products;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		66D6328C222A9A4F0084858E /* Wather_API */ = {
 			isa = PBXGroup;
 			children = (
-				66D6328D222A9A4F0084858E /* AppDelegate.swift */,
 				66D6328F222A9A4F0084858E /* ViewController.swift */,
+				66D63299222A9A500084858E /* Info.plist */,
+				66D6329F222A9B000084858E /* Other */,
+				66D6328B222A9A4F0084858E /* Products */,
+			);
+			path = Wather_API;
+			sourceTree = "<group>";
+		};
+		66D6329F222A9B000084858E /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				66D6328D222A9A4F0084858E /* AppDelegate.swift */,
 				66D63291222A9A4F0084858E /* Main.storyboard */,
 				66D63294222A9A500084858E /* Assets.xcassets */,
 				66D63296222A9A500084858E /* LaunchScreen.storyboard */,
-				66D63299222A9A500084858E /* Info.plist */,
 			);
-			path = Wather_API;
+			path = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
