@@ -24,10 +24,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     // MARK: - variables
-    var workWithData = WorkWithData()
-    var userLanguage: Language?
-    var userUnit: Units?
-    var city = "Kyiv"
+    private var workWithData = WorkWithData()
+    private var userLanguage: Language?
+    private var userUnit: Units?
+    private var city = "Kyiv"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +52,7 @@ class ViewController: UIViewController {
     }
     
     // MARK: - functions
-    func updateView() {
+    private func updateView() {
         if let response = workWithData.response {
             DispatchQueue.main.async {
                 self.activityIndicator(show: false)

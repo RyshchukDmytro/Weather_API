@@ -40,7 +40,7 @@ class WorkWithData {
         task.resume()
     }
     
-    func fillResponse(data: Response?) {
+    private func fillResponse(data: Response?) {
         response = data
         NotificationCenter.default.post(name: .didReceiveData, object: nil)
     }

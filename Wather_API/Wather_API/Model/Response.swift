@@ -9,16 +9,14 @@
 import Foundation
 
 struct Response: Codable {
-    let cod: Int
+    let base, name: String
+    let cod, dt, id: Int
+    let visibility: Int?
+    let clouds: Clouds
+    let coord: Coord
     let main: Main
     let sys: Sys
-    let base: String
-    let clouds: Clouds
     let wind: Wind
-    let name: String
-    let coord: Coord
-    let dt, id: Int
-    let visibility: Int?
     let weather: [Weather]
 }
 
