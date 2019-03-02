@@ -32,6 +32,7 @@ class WorkWithData {
                     let model = try JSONDecoder().decode(Response.self, from: data!)
                     self.fillResponse(data: model)
                 } catch let err {
+                    NotificationCenter.default.post(name: .didErrorHappened, object: nil)
                     print(err.localizedDescription)
                 }
             }

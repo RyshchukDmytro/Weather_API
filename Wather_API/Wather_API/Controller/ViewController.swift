@@ -33,6 +33,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .didReceiveData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidErrorHappened(_:)), name: .didErrorHappened, object: nil)
         self.userLanguage = Language.english
         self.userUnit = Units.metric
         startSearching()
@@ -163,11 +164,11 @@ extension ViewController {
     private func metricTypeInAlert() {
         let alert = UIAlertController(title: "Units", message: "Choose your system", preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "Metric", style: .default , handler:{ (UIAlertAction)in
+        alert.addAction(UIAlertAction(title: "Metric", style: .default, handler:{ (UIAlertAction) in
             self.userUnit = Units.metric
             self.startSearching()
         }))
-        alert.addAction(UIAlertAction(title: "Imperial", style: .default , handler:{ (UIAlertAction)in
+        alert.addAction(UIAlertAction(title: "Imperial", style: .default, handler:{ (UIAlertAction) in
             self.userUnit = Units.imperial
             self.startSearching()
         }))
@@ -178,7 +179,9 @@ extension ViewController {
     
     private func alertEmptyCity(text: String) {
         let alert = UIAlertController(title: text, message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (UIAlertAction) in
+            self.activityIndicator(show: false)
+        }))
         self.present(alert, animated: true)
     }
 }

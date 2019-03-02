@@ -10,4 +10,6 @@ import Foundation
 
 extension Notification.Name {
     static let didReceiveData = Notification.Name("didReceiveData")
+    static let didErrorHappened = Notification.Name("didErrorHappened")
+    
 }
