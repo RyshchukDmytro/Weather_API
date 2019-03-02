@@ -163,21 +163,27 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h1B-TW-HYY">
                                 <rect key="frame" x="323" y="615" width="22" height="22"/>
                                 <connections>
-                                    <action selector="chooseLanguage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0no-yb-FTp"/>
+                                    <action selector="openSettings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0no-yb-FTp"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Gt3-S6-A5h">
+                                <rect key="frame" x="177.5" y="250" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="h1B-TW-HYY" secondAttribute="trailing" constant="30" id="5M2-Z2-HLR"/>
                             <constraint firstItem="XMl-dp-vnE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="12" id="6Ze-a3-Sgs"/>
+                            <constraint firstItem="Gt3-S6-A5h" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="250" id="KUb-O8-NsH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XMl-dp-vnE" secondAttribute="trailing" constant="12" id="PKe-KV-IuK"/>
                             <constraint firstItem="XMl-dp-vnE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="12" id="eG8-M1-DQ7"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="h1B-TW-HYY" secondAttribute="bottom" constant="30" id="ek8-S5-f2v"/>
+                            <constraint firstItem="Gt3-S6-A5h" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fan-fb-L7G"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="Gt3-S6-A5h" id="ihb-AX-bT0"/>
                         <outlet property="cityLabel" destination="nuc-GU-7DY" id="pdz-7d-W1t"/>
                         <outlet property="cloudsLabel" destination="6hB-dL-rhV" id="Xa4-jr-B3H"/>
                         <outlet property="descriptionLabel" destination="jLj-vI-i2D" id="1up-b7-40D"/>

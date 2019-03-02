@@ -9,15 +9,14 @@
 import Foundation
 
 struct Response: Codable {
-    let cod: Int
+    let base, name: String
+    let cod, dt, id: Int
+    let visibility: Int?
+    let clouds: Clouds
+    let coord: Coord
     let main: Main
     let sys: Sys
-    let base: String
-    let clouds: Clouds
     let wind: Wind
-    let name: String
-    let coord: Coord
-    let dt, id, visibility: Int
     let weather: [Weather]
 }
 
@@ -30,9 +29,8 @@ struct Coord: Codable {
 }
 
 struct Main: Codable {
-    let humidity, pressure: Int
-    let temp, tempMax: Double
-    let tempMin: Double
+    let humidity: Int
+    let temp, pressure, tempMax, tempMin: Double
     
     enum CodingKeys: String, CodingKey {
         case humidity, pressure, temp
@@ -43,13 +41,13 @@ struct Main: Codable {
 
 struct Sys: Codable {
     let country: String
-    let id: Int
+    let id, type: Int?
     let message: Double
-    let sunrise, sunset, type: Int
+    let sunrise, sunset: Int
 }
 
 struct Wind: Codable {
-    let deg: Int
+    let deg: Double?
     let speed: Double
     let gust: Double?
 }

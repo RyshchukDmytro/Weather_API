@@ -32,6 +32,7 @@ class WorkWithData {
                     let model = try JSONDecoder().decode(Response.self, from: data!)
                     self.fillResponse(data: model)
                 } catch let err {
+                    NotificationCenter.default.post(name: .didErrorHappened, object: nil)
                     print(err.localizedDescription)
                 }
             }
@@ -39,7 +40,7 @@ class WorkWithData {
         task.resume()
     }
     
-    func fillResponse(data: Response?) {
+    private func fillResponse(data: Response?) {
         response = data
         NotificationCenter.default.post(name: .didReceiveData, object: nil)
     }

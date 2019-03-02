@@ -21,20 +21,22 @@ class ViewController: UIViewController {
     @IBOutlet weak var sunriseLabel: UILabel!
     @IBOutlet weak var sunsetLabel: UILabel!
     @IBOutlet weak var weatherIcon: UIImageView!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     // MARK: - variables
-    var workWithData = WorkWithData()
-    var userLanguage: Language?
-    var userUnit: Units?
-    var city = ""
+    private var workWithData = WorkWithData()
+    private var userLanguage: Language?
+    private var userUnit: Units?
+    private var city = "Kyiv"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .didReceiveData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidErrorHappened(_:)), name: .didErrorHappened, object: nil)
         self.userLanguage = Language.english
         self.userUnit = Units.metric
-        workWithData.getWeather(city: "London", language: userLanguage!, units: userUnit!)
+        startSearching()
     }
     
     @objc func onDidReceiveData(_ notification:Notification) {
@@ -45,34 +47,25 @@ class ViewController: UIViewController {
         alertEmptyCity(text: "Unexpected Error")
     }
     
-    @IBAction func chooseLanguage(_ sender: Any) {
-        let alert = UIAlertController(title: "Settings", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Change city", style: .default, handler:{ (UIAlertAction) in
-            self.changeCityInAlert()
-        }))
-        alert.addAction(UIAlertAction(title: "Language", style: .default, handler:{ (UIAlertAction) in
-            self.languagesInAlert()
-        }))
-        alert.addAction(UIAlertAction(title: "Unit", style: .default, handler:{ (UIAlertAction) in
-            self.metricTypeInAlert()
-        }))
-        alert.addAction(UIAlertAction(title: "Exit", style: .cancel, handler:{ (UIAlertAction) in
-        }))
-        self.present(alert, animated: true, completion: {
-            print("completion block")
-        })
+    @IBAction func openSettings(_ sender: Any) {
+        alertInSetting()
     }
     
     // MARK: - functions
-    func updateView() {
+    private func updateView() {
         if let response = workWithData.response {
             DispatchQueue.main.async {
-                let speed = self.userUnit == Units.metric ? "kmh" : "mph"
+                self.activityIndicator(show: false)
+                let unit = self.userUnit == Units.metric ? "m/s" : "mph"
                 let icon = response.weather[0].icon
+                var side = ""
+                if let deg = response.wind.deg {
+                    side = self.windBlow(degree: deg) + " "
+                }
                 self.cityLabel.text = response.name
                 self.tempLabel.text = String(Int(response.main.temp)) + "°"
                 self.descriptionLabel.text = response.weather[0].description
-                self.windLabel.text = String(response.wind.speed) + " \(speed)"
+                self.windLabel.text = "\(side)\(response.wind.speed) \(unit)"
                 self.cloudsLabel.text = String(response.clouds.all) + "%"
                 self.humidityLabel.text = String(response.main.humidity) + "%"
                 self.pressureLabel.text = String(response.main.pressure) + " hPa"
@@ -98,14 +91,47 @@ class ViewController: UIViewController {
         return dayTimePeriodFormatter.string(from: dateSunrise as Date)
     }
     
-    private func alertEmptyCity(text: String) {
-        let alert = UIAlertController(title: text, message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        self.present(alert, animated: true)
+    private func activityIndicator(show: Bool) {
+        if !show {
+            self.activityIndicatorView.startAnimating()
+        } else {
+            self.activityIndicatorView.stopAnimating()
+        }
+        self.activityIndicatorView.isHidden = !show
+    }
+    
+    private func startSearching() {
+        self.activityIndicator(show: true)
+        self.workWithData.getWeather(city: city, language: userLanguage!, units: userUnit!)
+    }
+    
+    private func windBlow(degree: Double) -> String {
+        let sides = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+                     "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"]
+        let position = Int(degree / 22.5) + 1
+        return sides[position]
     }
 }
 
 extension ViewController {
+    private func alertInSetting() {
+        let alert = UIAlertController(title: "Settings", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Change city", style: .default, handler:{ (UIAlertAction) in
+            self.changeCityInAlert()
+        }))
+        alert.addAction(UIAlertAction(title: "Language", style: .default, handler:{ (UIAlertAction) in
+            self.languagesInAlert()
+        }))
+        alert.addAction(UIAlertAction(title: "Unit", style: .default, handler:{ (UIAlertAction) in
+            self.metricTypeInAlert()
+        }))
+        alert.addAction(UIAlertAction(title: "Exit", style: .cancel, handler:{ (UIAlertAction) in
+        }))
+        self.present(alert, animated: true, completion: {
+            print("completion block")
+        })
+    }
+    
     private func changeCityInAlert() {
         let alert = UIAlertController(title: "Enter city name", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -116,8 +142,10 @@ extension ViewController {
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             if let city = alert.textFields?.first?.text {
-                self.city = city
-                self.workWithData.getWeather(city: city, language: self.userLanguage!, units: self.userUnit!)
+                let cityWithoutEmptySpace = city.replacingOccurrences(of: " ", with: "+")
+                print(city, cityWithoutEmptySpace)
+                self.city = cityWithoutEmptySpace
+                self.startSearching()
             }
         }))
         
@@ -130,6 +158,7 @@ extension ViewController {
         for language in languages {
             alert.addAction(UIAlertAction(title: language.rawValue, style: .default , handler:{ (UIAlertAction)in
                 self.userLanguage = language
+                self.startSearching()
             }))
         }
         self.present(alert, animated: true, completion: {
@@ -140,14 +169,24 @@ extension ViewController {
     private func metricTypeInAlert() {
         let alert = UIAlertController(title: "Units", message: "Choose your system", preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "Metric", style: .default , handler:{ (UIAlertAction)in
+        alert.addAction(UIAlertAction(title: "Metric", style: .default, handler:{ (UIAlertAction) in
             self.userUnit = Units.metric
+            self.startSearching()
         }))
-        alert.addAction(UIAlertAction(title: "Imperial", style: .default , handler:{ (UIAlertAction)in
+        alert.addAction(UIAlertAction(title: "Imperial", style: .default, handler:{ (UIAlertAction) in
             self.userUnit = Units.imperial
+            self.startSearching()
         }))
         self.present(alert, animated: true, completion: {
             print("completion block")
         })
+    }
+    
+    private func alertEmptyCity(text: String) {
+        let alert = UIAlertController(title: text, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (UIAlertAction) in
+            self.activityIndicator(show: false)
+        }))
+        self.present(alert, animated: true)
     }
 }
