@@ -30,7 +30,7 @@ class WorkWithData {
         let task = session.dataTask(with: request, completionHandler: {data, response, error in
             if error == nil {
                 let receivedData = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any]
-                //                print(receivedData)
+                                print(receivedData)
                 let data = receivedData!
                 self.fillResponse(data: data)
             }

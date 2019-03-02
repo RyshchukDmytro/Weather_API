@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
 
     // MARK: - outlets
-    @IBOutlet weak var cityTextField: UITextField!
+    @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var windLabel: UILabel!
@@ -26,12 +26,12 @@ class ViewController: UIViewController {
     var workWithData = WorkWithData()
     var userLanguage: Language?
     var userUnit: Units?
+    var city = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .didReceiveData, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidErrorHappened(_:)), name: .didErrorHappened, object: nil)
         self.userLanguage = Language.english
         self.userUnit = Units.metric
         workWithData.getWeather(city: "London", language: userLanguage!, units: userUnit!)
@@ -45,23 +45,40 @@ class ViewController: UIViewController {
         alertEmptyCity(text: "Unexpected Error")
     }
     
-    // MARK: - actions
-    @IBAction func showCityForecast(_ sender: Any) {
-        workWithData.getWeather(city: cityTextField.text!, language: userLanguage!, units: userUnit!)
-    }
-    
     @IBAction func chooseLanguage(_ sender: Any) {
         let alert = UIAlertController(title: "Settings", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Language", style: .default , handler:{ (UIAlertAction)in
+        alert.addAction(UIAlertAction(title: "Change city", style: .default, handler:{ (UIAlertAction) in
+            self.changeCityInAlert()
+        }))
+        alert.addAction(UIAlertAction(title: "Language", style: .default, handler:{ (UIAlertAction) in
             self.languagesInAlert()
         }))
-        alert.addAction(UIAlertAction(title: "Unit", style: .default , handler:{ (UIAlertAction)in
+        alert.addAction(UIAlertAction(title: "Unit", style: .default, handler:{ (UIAlertAction) in
             self.metricTypeInAlert()
+        }))
+        alert.addAction(UIAlertAction(title: "Exit", style: .cancel, handler:{ (UIAlertAction) in
         }))
         self.present(alert, animated: true, completion: {
             print("completion block")
         })
     }
+    
+    private func changeCityInAlert() {
+        let alert = UIAlertController(title: "Enter city name", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        alert.addTextField(configurationHandler: { textField in
+            textField.placeholder = "City"
+        })
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            if let city = alert.textFields?.first?.text {
+                self.city = city
+                self.workWithData.getWeather(city: city, language: self.userLanguage!, units: self.userUnit!)
+            }
+        }))
+        
+        self.present(alert, animated: true)    }
     
     private func languagesInAlert() {
         let alert = UIAlertController(title: "Languages", message: "Choose your language", preferredStyle: .actionSheet)
@@ -95,10 +112,10 @@ class ViewController: UIViewController {
     func updateView() {
         if let response = workWithData.response {
             DispatchQueue.main.async {
-                let temp = self.userUnit == Units.metric ? "℃" : "℉"
                 let speed = self.userUnit == Units.metric ? "kmh" : "mph"
                 let icon = response.weather.icon
-                self.tempLabel.text = String(response.main.temp) + " \(temp)"
+                self.cityLabel.text = response.name
+                self.tempLabel.text = String(Int(response.main.temp)) + "°"
                 self.descriptionLabel.text = response.weather.description
                 self.windLabel.text = String(Int(truncating: response.wind.speed)) + " \(speed)"
                 self.cloudsLabel.text = String(response.code.all) + "%"
