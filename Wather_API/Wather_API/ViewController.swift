@@ -30,7 +30,7 @@ struct Sys {
 }
 
 struct Wind {
-    let deg, speed: Int
+    let deg, speed: NSNumber
 }
 
 struct Main {
@@ -47,20 +47,39 @@ struct Weather {
     let id: Int
 }
 
+enum Language: String {
+    case ukrainian = "ua", english = "en", italian = "it", german = "de", spanish = "sp", french = "fr", swedish = "se"
+}
+
+enum Units {
+    case metric, imperial
+}
+
 class ViewController: UIViewController {
 
+    // MARK: - outlets
+    @IBOutlet weak var cityTextField: UITextField!
+    @IBOutlet weak var tempLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var windLabel: UILabel!
+    
+    // MARK: - variables
     var response: Response?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getWeather()
+        getWeather(city: "London", language: .english, units: .imperial)
     }
     
-    func getWeather(){
+    @IBAction func showCityForecast(_ sender: Any) {
+        getWeather(city: cityTextField.text!, language: .ukrainian, units: .metric)
+    }
+    
+    func getWeather(city: String, language: Language = .english, units: Units = .metric){
         let session = URLSession(configuration: .default)
 //        var datatask : URLSessionDataTask?
-        let url = "https://community-open-weather-map.p.rapidapi.com/weather?units=metric&q=Kyiv"
+        let url = "https://community-open-weather-map.p.rapidapi.com/weather?lang=\(language.rawValue)&units=\(units)&q=\(city)"
         let apiKey = "9b92450722msh86ab8b6cd4d0909p1e3a2ajsn1faebd87c4d4"
         let myURL = URL(string: url)
         var request =  URLRequest(url: myURL!)
@@ -92,8 +111,8 @@ class ViewController: UIViewController {
         let visibility = data?["visibility"] as! Int
         let dt = data?["dt"] as! Int
         let wind = data?["wind"] as? [String: Any]
-        let windDeg = wind?["deg"] as! Int
-        let windSpeed = wind?["speed"] as! Int
+        let windDeg = wind?["deg"] as! NSNumber
+        let windSpeed = wind?["speed"] as! NSNumber
         let cod = data?["cod"] as! Int
         let main = data?["main"] as? [String: Any]
         let mainHumidity = main?["humidity"] as! Int
@@ -119,11 +138,17 @@ class ViewController: UIViewController {
                             coord: Coord(lat: coordLat, lon: coordLon),
                             weather: Weather(description: weatherDescription, icon: weatherIcon, main: weatherMain, id: weatherId))
         
-        pres()
+        updateView()
     }
     
-    func pres() {
-        print(response?.coord.lat, response?.weather.description, response?.main.temp)
+    func updateView() {
+        if let response = response {
+            DispatchQueue.main.async {
+                self.tempLabel.text = String(response.main.temp)
+                self.descriptionLabel.text = response.weather.description
+                self.windLabel.text = String(Int(response.wind.speed))
+            }
+        }
     }
 
 
