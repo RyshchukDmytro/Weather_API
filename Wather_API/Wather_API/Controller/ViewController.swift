@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     var workWithData = WorkWithData()
     var userLanguage: Language?
     var userUnit: Units?
-    var city = "London"
+    var city = "Kyiv"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,13 +56,16 @@ class ViewController: UIViewController {
         if let response = workWithData.response {
             DispatchQueue.main.async {
                 self.activityIndicator(show: false)
-                let speed = self.userUnit == Units.metric ? "m/s" : "mph"
+                let unit = self.userUnit == Units.metric ? "m/s" : "mph"
                 let icon = response.weather[0].icon
-                let side = self.windBlow(degree: Double(response.wind.deg))
+                var side = ""
+                if let deg = response.wind.deg {
+                    side = self.windBlow(degree: deg) + " "
+                }
                 self.cityLabel.text = response.name
                 self.tempLabel.text = String(Int(response.main.temp)) + "°"
                 self.descriptionLabel.text = response.weather[0].description
-                self.windLabel.text = "\(side) \(response.wind.speed) \(speed)"
+                self.windLabel.text = "\(side)\(response.wind.speed) \(unit)"
                 self.cloudsLabel.text = String(response.clouds.all) + "%"
                 self.humidityLabel.text = String(response.main.humidity) + "%"
                 self.pressureLabel.text = String(response.main.pressure) + " hPa"
@@ -139,7 +142,9 @@ extension ViewController {
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             if let city = alert.textFields?.first?.text {
-                self.city = city
+                let cityWithoutEmptySpace = city.replacingOccurrences(of: " ", with: "+")
+                print(city, cityWithoutEmptySpace)
+                self.city = cityWithoutEmptySpace
                 self.startSearching()
             }
         }))
