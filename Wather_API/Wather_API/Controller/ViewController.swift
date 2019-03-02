@@ -63,6 +63,49 @@ class ViewController: UIViewController {
         })
     }
     
+    // MARK: - functions
+    func updateView() {
+        if let response = workWithData.response {
+            DispatchQueue.main.async {
+                let speed = self.userUnit == Units.metric ? "kmh" : "mph"
+                let icon = response.weather[0].icon
+                self.cityLabel.text = response.name
+                self.tempLabel.text = String(Int(response.main.temp)) + "°"
+                self.descriptionLabel.text = response.weather[0].description
+                self.windLabel.text = String(response.wind.speed) + " \(speed)"
+                self.cloudsLabel.text = String(response.clouds.all) + "%"
+                self.humidityLabel.text = String(response.main.humidity) + "%"
+                self.pressureLabel.text = String(response.main.pressure) + " hPa"
+                self.sunriseLabel.text = self.timestampToString(time: Double(response.sys.sunrise))
+                self.sunsetLabel.text = self.timestampToString(time: Double(response.sys.sunset))
+
+                let url = URL(string: "https://openweathermap.org/img/w/\(icon).png")
+                let data = try? Data(contentsOf: url!)
+                DispatchQueue.main.async {
+                    if let imageData = data {
+                        let image = UIImage(data: imageData)
+                        self.weatherIcon.image = image
+                    }
+                }
+            }
+        }
+    }
+    
+    private func timestampToString(time: Double) -> String {
+        let dateSunrise = NSDate(timeIntervalSince1970: time)
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateFormat = "HH:mm"
+        return dayTimePeriodFormatter.string(from: dateSunrise as Date)
+    }
+    
+    private func alertEmptyCity(text: String) {
+        let alert = UIAlertController(title: text, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.present(alert, animated: true)
+    }
+}
+
+extension ViewController {
     private func changeCityInAlert() {
         let alert = UIAlertController(title: "Enter city name", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -107,46 +150,4 @@ class ViewController: UIViewController {
             print("completion block")
         })
     }
-    
-    // MARK: - functions
-    func updateView() {
-        if let response = workWithData.response {
-            DispatchQueue.main.async {
-                let speed = self.userUnit == Units.metric ? "kmh" : "mph"
-                let icon = response.weather.icon
-                self.cityLabel.text = response.name
-                self.tempLabel.text = String(Int(response.main.temp)) + "°"
-                self.descriptionLabel.text = response.weather.description
-                self.windLabel.text = String(Int(truncating: response.wind.speed)) + " \(speed)"
-                self.cloudsLabel.text = String(response.code.all) + "%"
-                self.humidityLabel.text = String(response.main.humidity) + "%"
-                self.pressureLabel.text = String(response.main.pressure) + " hPa"
-                self.sunriseLabel.text = self.timestampToString(time: Double(response.sys.sunrise))
-                self.sunsetLabel.text = self.timestampToString(time: Double(response.sys.sunset))
-                
-                let url = URL(string: "https://openweathermap.org/img/w/\(icon).png")
-                let data = try? Data(contentsOf: url!)
-                DispatchQueue.main.async {
-                    if let imageData = data {
-                        let image = UIImage(data: imageData)
-                        self.weatherIcon.image = image
-                    }
-                }
-            }
-        }
-    }
-    
-    private func timestampToString(time: Double) -> String {
-        let dateSunrise = NSDate(timeIntervalSince1970: time)
-        let dayTimePeriodFormatter = DateFormatter()
-        dayTimePeriodFormatter.dateFormat = "HH:mm"
-        return dayTimePeriodFormatter.string(from: dateSunrise as Date)
-    }
-    
-    func alertEmptyCity(text: String) {
-        let alert = UIAlertController(title: text, message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        self.present(alert, animated: true)
-    }
 }
-
