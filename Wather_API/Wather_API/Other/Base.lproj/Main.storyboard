@@ -163,7 +163,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h1B-TW-HYY">
                                 <rect key="frame" x="323" y="615" width="22" height="22"/>
                                 <connections>
-                                    <action selector="chooseLanguage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0no-yb-FTp"/>
+                                    <action selector="openSettings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0no-yb-FTp"/>
                                 </connections>
                             </button>
                         </subviews>

@@ -45,22 +45,8 @@ class ViewController: UIViewController {
         alertEmptyCity(text: "Unexpected Error")
     }
     
-    @IBAction func chooseLanguage(_ sender: Any) {
-        let alert = UIAlertController(title: "Settings", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Change city", style: .default, handler:{ (UIAlertAction) in
-            self.changeCityInAlert()
-        }))
-        alert.addAction(UIAlertAction(title: "Language", style: .default, handler:{ (UIAlertAction) in
-            self.languagesInAlert()
-        }))
-        alert.addAction(UIAlertAction(title: "Unit", style: .default, handler:{ (UIAlertAction) in
-            self.metricTypeInAlert()
-        }))
-        alert.addAction(UIAlertAction(title: "Exit", style: .cancel, handler:{ (UIAlertAction) in
-        }))
-        self.present(alert, animated: true, completion: {
-            print("completion block")
-        })
+    @IBAction func openSettings(_ sender: Any) {
+        alertInSetting()
     }
     
     // MARK: - functions
@@ -97,15 +83,27 @@ class ViewController: UIViewController {
         dayTimePeriodFormatter.dateFormat = "HH:mm"
         return dayTimePeriodFormatter.string(from: dateSunrise as Date)
     }
-    
-    private func alertEmptyCity(text: String) {
-        let alert = UIAlertController(title: text, message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        self.present(alert, animated: true)
-    }
 }
 
 extension ViewController {
+    private func alertInSetting() {
+        let alert = UIAlertController(title: "Settings", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Change city", style: .default, handler:{ (UIAlertAction) in
+            self.changeCityInAlert()
+        }))
+        alert.addAction(UIAlertAction(title: "Language", style: .default, handler:{ (UIAlertAction) in
+            self.languagesInAlert()
+        }))
+        alert.addAction(UIAlertAction(title: "Unit", style: .default, handler:{ (UIAlertAction) in
+            self.metricTypeInAlert()
+        }))
+        alert.addAction(UIAlertAction(title: "Exit", style: .cancel, handler:{ (UIAlertAction) in
+        }))
+        self.present(alert, animated: true, completion: {
+            print("completion block")
+        })
+    }
+    
     private func changeCityInAlert() {
         let alert = UIAlertController(title: "Enter city name", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -149,5 +147,11 @@ extension ViewController {
         self.present(alert, animated: true, completion: {
             print("completion block")
         })
+    }
+    
+    private func alertEmptyCity(text: String) {
+        let alert = UIAlertController(title: text, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.present(alert, animated: true)
     }
 }
