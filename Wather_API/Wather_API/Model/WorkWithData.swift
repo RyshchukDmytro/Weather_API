@@ -24,24 +24,25 @@ class WorkWithData {
     var response: Response?
     var forecast: Forecast?
     
-    func getWeatherNew(api: Api, city: String, language: Language = .english, units: Units = .metric){
+    func getWeather(api: Api, city: String, language: Language = .english, units: Units = .metric){
         let session = URLSession(configuration: .default)
         let url = "https://community-open-weather-map.p.rapidapi.com/\(api)?lang=\(language.rawValue)&units=\(units)&q=\(city)"
         let apiKey = "9b92450722msh86ab8b6cd4d0909p1e3a2ajsn1faebd87c4d4"
         let myURL = URL(string: url)
         var request =  URLRequest(url: myURL!)
         request.allHTTPHeaderFields = ["X-RapidAPI-Key": apiKey]
-        let task = session.dataTask(with: request, completionHandler: {data, response, error in
+        let task = session.dataTask(with: request, completionHandler: {data, resp, error in
             if error == nil {
                 do {
                     if api == .weather {
                         let model = try JSONDecoder().decode(Response.self, from: data!)
-                        self.fillResponse(data: model)
+                        self.response = model
+                        NotificationCenter.default.post(name: .didReceiveData, object: nil)
                     } else {
                         let model = try JSONDecoder().decode(Forecast.self, from: data!)
-                        self.fillForecastResponse(data: model)
+                        self.forecast = model
+                        NotificationCenter.default.post(name: .didReceiveData, object: nil)
                     }
-                    
                 } catch let err {
                     NotificationCenter.default.post(name: .didErrorHappened, object: nil)
                     print(err.localizedDescription)
@@ -49,15 +50,5 @@ class WorkWithData {
             }
         })
         task.resume()
-    }
-    
-    private func fillResponse(data: Response?) {
-        response = data
-        NotificationCenter.default.post(name: .didReceiveData, object: nil)
-    }
-    
-    private func fillForecastResponse(data: Forecast?) {
-        forecast = data
-        NotificationCenter.default.post(name: .didReceiveData, object: nil)
     }
 }
