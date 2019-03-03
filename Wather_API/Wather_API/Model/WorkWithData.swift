@@ -51,8 +51,8 @@ class WorkWithData {
         let task = session.dataTask(with: request, completionHandler: {data, response, error in
             if error == nil {
                 do {
-                    let receivedData = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any]
-                                    print("\n\n", receivedData)
+//                    let receivedData = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any]
+//                                    print("\n\n", receivedData)
                     let model = try JSONDecoder().decode(Forecast.self, from: data!)
                     self.fillForecastResponse(data: model)
                 } catch let err {
