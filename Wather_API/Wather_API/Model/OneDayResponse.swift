@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Response: Codable {
+struct OneDayResponse: Codable {
     let base, name: String
     let cod, dt, id: Int
     let visibility: Int?
@@ -58,7 +58,7 @@ struct Weather: Codable {
     let main: String
 }
 
-struct Forecast: Codable {
+struct ForecastResponse: Codable {
     let city: City
     let cod: String?
     let message: Double
