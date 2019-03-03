@@ -35,14 +35,15 @@ class ViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .didReceiveData, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onDidErrorHappened(_:)), name: .didErrorHappened, object: nil)
+        self.activityIndicatorView.hidesWhenStopped = true
         self.userLanguage = Language.english
         self.userUnit = Units.metric
         startSearching()
     }
     
     @objc func onDidReceiveData(_ notification:Notification) {
-        updateView()
         DispatchQueue.main.async {
+            self.updateView()
             self.forecastCollectionView.reloadData()
         }
     }
@@ -58,32 +59,30 @@ class ViewController: UIViewController {
     // MARK: - functions
     private func updateView() {
         if let response = workWithData.response {
-            DispatchQueue.main.async {
-                self.activityIndicator(show: false)
-                let unit = self.userUnit == Units.metric ? "m/s" : "mph"
-                let icon = response.weather[0].icon
-                var side = ""
-                if let deg = response.wind.deg {
-                    side = self.windBlow(degree: deg) + " "
-                }
-                self.cityLabel.text = response.name
-                self.tempLabel.text = String(Int(response.main.temp)) + "°"
-                self.descriptionLabel.text = response.weather[0].description
-                self.windLabel.text = "\(side)\(response.wind.speed) \(unit)"
-                self.cloudsLabel.text = String(response.clouds.all) + "%"
-                self.humidityLabel.text = String(response.main.humidity) + "%"
-                self.pressureLabel.text = String(response.main.pressure) + " hPa"
-                self.sunriseLabel.text = self.timestampToString(time: Double(response.sys.sunrise))
-                self.sunsetLabel.text = self.timestampToString(time: Double(response.sys.sunset))
+            self.activityIndicator(show: false)
+            let unit = self.userUnit == Units.metric ? "m/s" : "mph"
+            let icon = response.weather[0].icon
+            var side = ""
+            if let deg = response.wind.deg {
+                side = self.windBlow(degree: deg) + " "
+            }
+            self.cityLabel.text = response.name
+            self.tempLabel.text = String(Int(response.main.temp)) + "°"
+            self.descriptionLabel.text = response.weather[0].description
+            self.windLabel.text = "\(side)\(response.wind.speed) \(unit)"
+            self.cloudsLabel.text = String(response.clouds.all) + "%"
+            self.humidityLabel.text = String(response.main.humidity) + "%"
+            self.pressureLabel.text = String(response.main.pressure) + " hPa"
+            self.sunriseLabel.text = self.timestampToString(time: Double(response.sys.sunrise))
+            self.sunsetLabel.text = self.timestampToString(time: Double(response.sys.sunset))
 
-                let url = URL(string: "https://openweathermap.org/img/w/\(icon).png")
-                let data = try? Data(contentsOf: url!)
-                let concurrentQueue = DispatchQueue(label: "queuename", attributes: .concurrent)
-                concurrentQueue.sync {
-                    if let imageData = data {
-                        let image = UIImage(data: imageData)
-                        self.weatherIcon.image = image
-                    }
+            let url = URL(string: "https://openweathermap.org/img/w/\(icon).png")
+            let data = try? Data(contentsOf: url!)
+            let concurrentQueue = DispatchQueue(label: "queuename", attributes: .concurrent)
+            concurrentQueue.sync {
+                if let imageData = data {
+                    let image = UIImage(data: imageData)
+                    self.weatherIcon.image = image
                 }
             }
         }
@@ -97,18 +96,17 @@ class ViewController: UIViewController {
     }
     
     private func activityIndicator(show: Bool) {
-        if !show {
+        if show {
             self.activityIndicatorView.startAnimating()
         } else {
             self.activityIndicatorView.stopAnimating()
         }
-        self.activityIndicatorView.isHidden = !show
     }
     
     private func startSearching() {
-        self.workWithData.getWeatherNew(api: .forecast, city: city)
+        self.workWithData.getWeather(api: .forecast, city: city)
         self.activityIndicator(show: true)
-        self.workWithData.getWeatherNew(api: .weather, city: city, language: userLanguage!, units: userUnit!)
+        self.workWithData.getWeather(api: .weather, city: city, language: userLanguage!, units: userUnit!)
     }
     
     private func windBlow(degree: Double) -> String {
@@ -200,22 +198,9 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath as IndexPath) as! ForecastCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath) as! ForecastCell
         if let forecast = workWithData.forecast {
-            let time = forecast.list[indexPath.row].dtTxt.suffix(9).prefix(3).dropFirst()
-            cell.timeLabel.text = String(time)
-            cell.temperatureLabel.text = String(Int(forecast.list[indexPath.row].main.temp)) + "°"
-            
-            let icon = forecast.list[indexPath.row].weather[0].icon
-            let serialQueue = DispatchQueue(label: "queuename")
-            serialQueue.sync {
-                let url = URL(string: "https://openweathermap.org/img/w/\(icon).png")
-                let data = try? Data(contentsOf: url!)
-                if let imageData = data {
-                    let image = UIImage(data: imageData)
-                    cell.iconWeatherImage.image = image
-                }
-            }
+            cell.setUp(list: forecast.list[indexPath.row])
         }
         return cell
     }
