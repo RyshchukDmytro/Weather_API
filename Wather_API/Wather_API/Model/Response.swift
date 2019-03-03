@@ -70,7 +70,7 @@ struct City: Codable {
     let country: String
     let id: Int
     let name: String
-    let population: Int
+    let population: Int?
     let coord: Coord
 }
 

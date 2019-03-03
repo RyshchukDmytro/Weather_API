@@ -33,6 +33,8 @@ class WorkWithData {
         request.allHTTPHeaderFields = ["X-RapidAPI-Key": apiKey]
         let task = session.dataTask(with: request, completionHandler: {data, resp, error in
             if error == nil {
+//                let receivedData = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any]
+//                print(receivedData)
                 do {
                     if api == .weather {
                         let model = try JSONDecoder().decode(OneDayResponse.self, from: data!)
