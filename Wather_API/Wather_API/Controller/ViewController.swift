@@ -78,7 +78,8 @@ class ViewController: UIViewController {
 
                 let url = URL(string: "https://openweathermap.org/img/w/\(icon).png")
                 let data = try? Data(contentsOf: url!)
-                DispatchQueue.main.async {
+                let concurrentQueue = DispatchQueue(label: "queuename", attributes: .concurrent)
+                concurrentQueue.sync {
                     if let imageData = data {
                         let image = UIImage(data: imageData)
                         self.weatherIcon.image = image
@@ -208,7 +209,13 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
             cell.temperatureLabel.text = String(Int(forecast.list[indexPath.row].main.temp)) + "°"
             
             let icon = forecast.list[indexPath.row].weather[0].icon
-            DispatchQueue.main.async {
+//            let concurrentQueue = DispatchQueue(label: "queuename", attributes: .concurrent)
+//            concurrentQueue.sync {
+//
+//            }
+            
+            let serialQueue = DispatchQueue(label: "queuename")
+            serialQueue.sync {
                 let url = URL(string: "https://openweathermap.org/img/w/\(icon).png")
                 let data = try? Data(contentsOf: url!)
                 if let imageData = data {
@@ -216,6 +223,9 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
                     cell.iconWeatherImage.image = image
                 }
             }
+//            DispatchQueue.main.async {
+//
+//            }
         }
         return cell
     }
