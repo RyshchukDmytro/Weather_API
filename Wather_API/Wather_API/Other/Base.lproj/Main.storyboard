@@ -170,7 +170,7 @@
                                 <rect key="frame" x="177.5" y="250" width="20" height="20"/>
                             </activityIndicatorView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SZh-mN-Kvi">
-                                <rect key="frame" x="12" y="331" width="351" height="120"/>
+                                <rect key="frame" x="12" y="330.5" width="351" height="120"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="o8g-v1-ftT"/>
@@ -219,7 +219,6 @@
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstAttribute="bottomMargin" secondItem="cNE-8I-Cya" secondAttribute="bottom" constant="18" id="31i-MR-6m9"/>
                                             <constraint firstItem="cNE-8I-Cya" firstAttribute="leading" secondItem="uQN-cv-eVl" secondAttribute="leading" id="RuP-5d-Z0b"/>
                                             <constraint firstItem="cNE-8I-Cya" firstAttribute="top" secondItem="uQN-cv-eVl" secondAttribute="top" id="qif-Vq-ecf"/>
                                         </constraints>

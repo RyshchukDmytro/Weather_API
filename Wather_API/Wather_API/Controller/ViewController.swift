@@ -106,10 +106,9 @@ class ViewController: UIViewController {
     }
     
     private func startSearching() {
-        self.workWithData.getForecastWeather(city: city)
-        
+        self.workWithData.getWeatherNew(api: .forecast, city: city)
         self.activityIndicator(show: true)
-        self.workWithData.getWeather(city: city, language: userLanguage!, units: userUnit!)
+        self.workWithData.getWeatherNew(api: .weather, city: city, language: userLanguage!, units: userUnit!)
     }
     
     private func windBlow(degree: Double) -> String {
@@ -201,7 +200,6 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // get a reference to our storyboard cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath as IndexPath) as! ForecastCell
         if let forecast = workWithData.forecast {
             let time = forecast.list[indexPath.row].dtTxt.suffix(9).prefix(3).dropFirst()
@@ -209,11 +207,6 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
             cell.temperatureLabel.text = String(Int(forecast.list[indexPath.row].main.temp)) + "°"
             
             let icon = forecast.list[indexPath.row].weather[0].icon
-//            let concurrentQueue = DispatchQueue(label: "queuename", attributes: .concurrent)
-//            concurrentQueue.sync {
-//
-//            }
-            
             let serialQueue = DispatchQueue(label: "queuename")
             serialQueue.sync {
                 let url = URL(string: "https://openweathermap.org/img/w/\(icon).png")
@@ -223,9 +216,6 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
                     cell.iconWeatherImage.image = image
                 }
             }
-//            DispatchQueue.main.async {
-//
-//            }
         }
         return cell
     }

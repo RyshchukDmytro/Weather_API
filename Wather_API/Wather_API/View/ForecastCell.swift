@@ -13,5 +13,4 @@ class ForecastCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var iconWeatherImage: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
-    
 }

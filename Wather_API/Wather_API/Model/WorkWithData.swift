@@ -16,13 +16,17 @@ enum Units {
     case metric, imperial
 }
 
+enum Api {
+    case weather, forecast
+}
+
 class WorkWithData {
     var response: Response?
     var forecast: Forecast?
     
-    func getWeather(city: String, language: Language = .english, units: Units = .metric){
+    func getWeatherNew(api: Api, city: String, language: Language = .english, units: Units = .metric){
         let session = URLSession(configuration: .default)
-        let url = "https://community-open-weather-map.p.rapidapi.com/weather?lang=\(language.rawValue)&units=\(units)&q=\(city)"
+        let url = "https://community-open-weather-map.p.rapidapi.com/\(api)?lang=\(language.rawValue)&units=\(units)&q=\(city)"
         let apiKey = "9b92450722msh86ab8b6cd4d0909p1e3a2ajsn1faebd87c4d4"
         let myURL = URL(string: url)
         var request =  URLRequest(url: myURL!)
@@ -30,31 +34,14 @@ class WorkWithData {
         let task = session.dataTask(with: request, completionHandler: {data, response, error in
             if error == nil {
                 do {
-                    let model = try JSONDecoder().decode(Response.self, from: data!)
-                    self.fillResponse(data: model)
-                } catch let err {
-                    NotificationCenter.default.post(name: .didErrorHappened, object: nil)
-                    print(err.localizedDescription)
-                }
-            }
-        })
-        task.resume()
-    }
-    
-    func getForecastWeather(city: String, language: Language = .english, units: Units = .metric){
-        let session = URLSession(configuration: .default)
-        let url = "https://community-open-weather-map.p.rapidapi.com/forecast?lang=\(language.rawValue)&units=\(units)&q=\(city)"
-        let apiKey = "9b92450722msh86ab8b6cd4d0909p1e3a2ajsn1faebd87c4d4"
-        let myURL = URL(string: url)
-        var request =  URLRequest(url: myURL!)
-        request.allHTTPHeaderFields = ["X-RapidAPI-Key": apiKey]
-        let task = session.dataTask(with: request, completionHandler: {data, response, error in
-            if error == nil {
-                do {
-//                    let receivedData = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any]
-//                                    print("\n\n", receivedData)
-                    let model = try JSONDecoder().decode(Forecast.self, from: data!)
-                    self.fillForecastResponse(data: model)
+                    if api == .weather {
+                        let model = try JSONDecoder().decode(Response.self, from: data!)
+                        self.fillResponse(data: model)
+                    } else {
+                        let model = try JSONDecoder().decode(Forecast.self, from: data!)
+                        self.fillForecastResponse(data: model)
+                    }
+                    
                 } catch let err {
                     NotificationCenter.default.post(name: .didErrorHappened, object: nil)
                     print(err.localizedDescription)
@@ -71,7 +58,6 @@ class WorkWithData {
     
     private func fillForecastResponse(data: Forecast?) {
         forecast = data
-        print(forecast)
         NotificationCenter.default.post(name: .didReceiveData, object: nil)
     }
 }
