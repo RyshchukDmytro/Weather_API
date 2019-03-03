@@ -101,6 +101,8 @@ class ViewController: UIViewController {
     }
     
     private func startSearching() {
+        self.workWithData.getForecastWeather(city: city)
+        
         self.activityIndicator(show: true)
         self.workWithData.getWeather(city: city, language: userLanguage!, units: userUnit!)
     }
