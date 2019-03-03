@@ -22,6 +22,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var sunsetLabel: UILabel!
     @IBOutlet weak var weatherIcon: UIImageView!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var forecastCollectionView: UICollectionView!
     
     // MARK: - variables
     private var workWithData = WorkWithData()
@@ -41,6 +42,9 @@ class ViewController: UIViewController {
     
     @objc func onDidReceiveData(_ notification:Notification) {
         updateView()
+        DispatchQueue.main.async {
+            self.forecastCollectionView.reloadData()
+        }
     }
     
     @objc func onDidErrorHappened(_ notification:Notification) {
@@ -74,7 +78,8 @@ class ViewController: UIViewController {
 
                 let url = URL(string: "https://openweathermap.org/img/w/\(icon).png")
                 let data = try? Data(contentsOf: url!)
-                DispatchQueue.main.async {
+                let concurrentQueue = DispatchQueue(label: "queuename", attributes: .concurrent)
+                concurrentQueue.sync {
                     if let imageData = data {
                         let image = UIImage(data: imageData)
                         self.weatherIcon.image = image
@@ -101,8 +106,9 @@ class ViewController: UIViewController {
     }
     
     private func startSearching() {
+        self.workWithData.getWeatherNew(api: .forecast, city: city)
         self.activityIndicator(show: true)
-        self.workWithData.getWeather(city: city, language: userLanguage!, units: userUnit!)
+        self.workWithData.getWeatherNew(api: .weather, city: city, language: userLanguage!, units: userUnit!)
     }
     
     private func windBlow(degree: Double) -> String {
@@ -127,9 +133,7 @@ extension ViewController {
         }))
         alert.addAction(UIAlertAction(title: "Exit", style: .cancel, handler:{ (UIAlertAction) in
         }))
-        self.present(alert, animated: true, completion: {
-            print("completion block")
-        })
+        self.present(alert, animated: true)
     }
     
     private func changeCityInAlert() {
@@ -148,8 +152,8 @@ extension ViewController {
                 self.startSearching()
             }
         }))
-        
-        self.present(alert, animated: true)    }
+        self.present(alert, animated: true)
+    }
     
     private func languagesInAlert() {
         let alert = UIAlertController(title: "Languages", message: "Choose your language", preferredStyle: .actionSheet)
@@ -161,9 +165,7 @@ extension ViewController {
                 self.startSearching()
             }))
         }
-        self.present(alert, animated: true, completion: {
-            print("completion block")
-        })
+        self.present(alert, animated: true)
     }
     
     private func metricTypeInAlert() {
@@ -177,9 +179,7 @@ extension ViewController {
             self.userUnit = Units.imperial
             self.startSearching()
         }))
-        self.present(alert, animated: true, completion: {
-            print("completion block")
-        })
+        self.present(alert, animated: true)
     }
     
     private func alertEmptyCity(text: String) {
@@ -188,5 +188,35 @@ extension ViewController {
             self.activityIndicator(show: false)
         }))
         self.present(alert, animated: true)
+    }
+}
+
+extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let forecast = workWithData.forecast {
+            return forecast.list.count
+        }
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath as IndexPath) as! ForecastCell
+        if let forecast = workWithData.forecast {
+            let time = forecast.list[indexPath.row].dtTxt.suffix(9).prefix(3).dropFirst()
+            cell.timeLabel.text = String(time)
+            cell.temperatureLabel.text = String(Int(forecast.list[indexPath.row].main.temp)) + "°"
+            
+            let icon = forecast.list[indexPath.row].weather[0].icon
+            let serialQueue = DispatchQueue(label: "queuename")
+            serialQueue.sync {
+                let url = URL(string: "https://openweathermap.org/img/w/\(icon).png")
+                let data = try? Data(contentsOf: url!)
+                if let imageData = data {
+                    let image = UIImage(data: imageData)
+                    cell.iconWeatherImage.image = image
+                }
+            }
+        }
+        return cell
     }
 }

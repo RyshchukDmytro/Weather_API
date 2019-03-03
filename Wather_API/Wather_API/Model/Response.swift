@@ -57,3 +57,39 @@ struct Weather: Codable {
     let id: Int
     let main: String
 }
+
+struct Forecast: Codable {
+    let city: City
+    let cod: String?
+    let message: Double
+    let cnt: Int
+    let list: [List]
+}
+
+struct City: Codable {
+    let country: String
+    let id: Int
+    let name: String
+    let population: Int
+    let coord: Coord
+}
+
+struct List: Codable {
+    let dt: Int
+    let dtTxt: String
+    let clouds: Clouds
+    let main: Main
+    let sys: SysList
+    let weather: [Weather]
+    let wind: Wind
+    
+    enum CodingKeys: String, CodingKey {
+        case clouds, dt
+        case dtTxt = "dt_txt"
+        case main, sys, weather, wind
+    }
+}
+
+struct SysList: Codable {
+    let pod: String
+}
