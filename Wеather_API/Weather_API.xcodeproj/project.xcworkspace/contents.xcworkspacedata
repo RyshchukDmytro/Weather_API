@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Wather_API.xcodeproj">
+      location = "self:/Users/Dmytro/Desktop/GitProjects/Weather_API/Wather_API/Weather_API.xcodeproj">
    </FileRef>
 </Workspace>

@@ -234,15 +234,15 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="OpF-rp-bbW"/>
                                 </connections>
                             </collectionView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tab-ev-ba1">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tab-ev-ba1">
                                 <rect key="frame" x="12" y="458.5" width="351" height="144.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="dailyCell" id="B3O-j1-erw" customClass="DailyCell" customModule="Wather_API" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="351" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="dailyCell" rowHeight="25" id="B3O-j1-erw" customClass="DailyCell" customModule="Wather_API" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="351" height="25"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="B3O-j1-erw" id="VST-6a-xZV">
-                                            <rect key="frame" x="0.0" y="0.0" width="351" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="351" height="25"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BsQ-eZ-pFo">
@@ -276,6 +276,7 @@
                                                 <constraint firstItem="Ywk-BA-jYE" firstAttribute="top" secondItem="VST-6a-xZV" secondAttribute="top" constant="4" id="9og-ff-mT7"/>
                                                 <constraint firstItem="BsQ-eZ-pFo" firstAttribute="top" secondItem="VST-6a-xZV" secondAttribute="top" constant="4" id="Hn6-f3-a0J"/>
                                                 <constraint firstAttribute="trailing" secondItem="T07-cz-E3r" secondAttribute="trailing" id="LBp-zN-hrv"/>
+                                                <constraint firstAttribute="bottom" secondItem="BsQ-eZ-pFo" secondAttribute="bottom" constant="6" id="gJw-7u-ruZ"/>
                                                 <constraint firstItem="BsQ-eZ-pFo" firstAttribute="leading" secondItem="VST-6a-xZV" secondAttribute="leading" id="hRE-YW-8gc"/>
                                                 <constraint firstItem="T07-cz-E3r" firstAttribute="top" secondItem="VST-6a-xZV" secondAttribute="top" constant="4" id="njG-hg-AV6"/>
                                             </constraints>
