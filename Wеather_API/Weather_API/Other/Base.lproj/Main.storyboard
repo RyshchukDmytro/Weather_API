@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Wather_API" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Weather_API" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -170,10 +170,10 @@
                                 <rect key="frame" x="177.5" y="250" width="20" height="20"/>
                             </activityIndicatorView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SZh-mN-Kvi">
-                                <rect key="frame" x="12" y="330.5" width="351" height="120"/>
+                                <rect key="frame" x="12" y="322.5" width="351" height="90"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="o8g-v1-ftT"/>
+                                    <constraint firstAttribute="height" constant="90" id="o8g-v1-ftT"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Pjo-CA-DbB">
                                     <size key="itemSize" width="37" height="83"/>
@@ -182,8 +182,8 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="forecastCell" id="uQN-cv-eVl" customClass="ForecastCell" customModule="Wather_API" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="18.5" width="37" height="83"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="forecastCell" id="uQN-cv-eVl" customClass="ForecastCell" customModule="Weather_API" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="3.5" width="37" height="83"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="37" height="83"/>
@@ -235,10 +235,10 @@
                                 </connections>
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tab-ev-ba1">
-                                <rect key="frame" x="12" y="458.5" width="351" height="144.5"/>
+                                <rect key="frame" x="12" y="416.5" width="351" height="186.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="dailyCell" rowHeight="25" id="B3O-j1-erw" customClass="DailyCell" customModule="Wather_API" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="dailyCell" rowHeight="25" id="B3O-j1-erw" customClass="DailyCell" customModule="Weather_API" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="351" height="25"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="B3O-j1-erw" id="VST-6a-xZV">
@@ -302,13 +302,13 @@
                             <constraint firstItem="SZh-mN-Kvi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="12" id="Bf9-p5-HC4"/>
                             <constraint firstItem="Gt3-S6-A5h" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="250" id="KUb-O8-NsH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XMl-dp-vnE" secondAttribute="trailing" constant="12" id="PKe-KV-IuK"/>
-                            <constraint firstItem="SZh-mN-Kvi" firstAttribute="top" secondItem="XMl-dp-vnE" secondAttribute="bottom" constant="12" id="QT5-8k-dsr"/>
+                            <constraint firstItem="SZh-mN-Kvi" firstAttribute="top" secondItem="XMl-dp-vnE" secondAttribute="bottom" constant="4" id="QT5-8k-dsr"/>
                             <constraint firstItem="h1B-TW-HYY" firstAttribute="top" secondItem="tab-ev-ba1" secondAttribute="bottom" constant="12" id="QdQ-O6-ojz"/>
                             <constraint firstItem="XMl-dp-vnE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="12" id="eG8-M1-DQ7"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="h1B-TW-HYY" secondAttribute="bottom" constant="30" id="ek8-S5-f2v"/>
                             <constraint firstItem="Gt3-S6-A5h" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fan-fb-L7G"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="tab-ev-ba1" secondAttribute="trailing" constant="12" id="maA-RQ-WTn"/>
-                            <constraint firstItem="tab-ev-ba1" firstAttribute="top" secondItem="SZh-mN-Kvi" secondAttribute="bottom" constant="8" id="xCN-bh-SbX"/>
+                            <constraint firstItem="tab-ev-ba1" firstAttribute="top" secondItem="SZh-mN-Kvi" secondAttribute="bottom" constant="4" id="xCN-bh-SbX"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="SZh-mN-Kvi" secondAttribute="trailing" constant="12" id="ynP-kX-g6b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
