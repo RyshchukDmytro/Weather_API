@@ -18,6 +18,10 @@ class ForecastCell: UICollectionViewCell {
         let time = list.dtTxt.suffix(9).prefix(3).dropFirst()
         timeLabel.text = String(time)
         temperatureLabel.text = String(Int(list.main.temp)) + "°"
+        downloadIcon(list: list)
+    }
+    
+    private func downloadIcon(list: List) {
         let icon = list.weather[0].icon
         let serialQueue = DispatchQueue(label: "queuename")
         serialQueue.sync {
