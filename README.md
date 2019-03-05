@@ -9,12 +9,12 @@ Time:
 - Refactoring - 2 hours
 - Forecast hours mode - 2 hours
 - Using Cyrillic alphabet in searching - 1 hour
+- Show forecast for next 5-7 days - 1.5 hours
 ----------------------------------
-- TOTAL - 11 hours
+- TOTAL - 12.5 hours
 
 Future Updates:
 - Show correct time for sunrise and sunset
-- Show forecast for next 5-7 days
 - Animating wallpapers (need to search if it possible)
 - Use right DispatchQueue for smoozy animation
 - Update UI (optional)
