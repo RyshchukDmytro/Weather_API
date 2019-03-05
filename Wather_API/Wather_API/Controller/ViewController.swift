@@ -23,12 +23,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var weatherIcon: UIImageView!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var forecastCollectionView: UICollectionView!
+    @IBOutlet weak var dailyTableView: UITableView!
+    
     
     // MARK: - variables
     private var workWithData = WorkWithData()
     private var userLanguage: Language?
     private var userUnit: Units?
     private var city = "Kyiv"
+    private var forecastDaily: [List]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +41,7 @@ class ViewController: UIViewController {
         self.activityIndicatorView.hidesWhenStopped = true
         self.userLanguage = Language.english
         self.userUnit = Units.metric
+        forecastDaily = []
         startSearching()
     }
     
@@ -45,6 +49,7 @@ class ViewController: UIViewController {
         DispatchQueue.main.async {
             self.updateView()
             self.forecastCollectionView.reloadData()
+            self.dailyTableView.reloadData()
         }
     }
     
@@ -145,7 +150,6 @@ extension ViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             if let city = alert.textFields?.first?.text {
                 let cityWithoutEmptySpace = city.replacingOccurrences(of: " ", with: "+")
-                print(city, cityWithoutEmptySpace)
                 self.city = cityWithoutEmptySpace
                 self.startSearching()
             }
@@ -201,6 +205,29 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath) as! ForecastCell
         if let forecast = workWithData.forecast {
             cell.setUp(list: forecast.list[indexPath.row])
+        }
+        return cell
+    }
+}
+
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        forecastDaily = []
+        if let list = workWithData.forecast?.list {
+            for i in 0..<list.count {
+                let time = list[i].dtTxt.suffix(9).prefix(3).dropFirst()
+                if String(time) == "15" {
+                    self.forecastDaily?.append(list[i])
+                }
+            }
+        }
+        return forecastDaily?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "dailyCell", for: indexPath) as! DailyCell
+        if let list = forecastDaily {
+            cell.setUp(list: list[indexPath.row])
         }
         return cell
     }

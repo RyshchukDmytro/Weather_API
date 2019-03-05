@@ -234,18 +234,80 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="OpF-rp-bbW"/>
                                 </connections>
                             </collectionView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tab-ev-ba1">
+                                <rect key="frame" x="12" y="458.5" width="351" height="144.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="dailyCell" id="B3O-j1-erw" customClass="DailyCell" customModule="Wather_API" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="351" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="B3O-j1-erw" id="VST-6a-xZV">
+                                            <rect key="frame" x="0.0" y="0.0" width="351" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BsQ-eZ-pFo">
+                                                    <rect key="frame" x="0.0" y="4" width="90" height="15"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="90" id="EjZ-2M-W9q"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ywk-BA-jYE">
+                                                    <rect key="frame" x="90" y="4" width="16" height="16"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="16" id="Iug-kb-UYq"/>
+                                                        <constraint firstAttribute="height" constant="16" id="LeF-qd-gie"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="35" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T07-cz-E3r">
+                                                    <rect key="frame" x="327" y="4" width="24" height="15"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="24" id="yJk-MN-q3n"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Ywk-BA-jYE" firstAttribute="leading" secondItem="BsQ-eZ-pFo" secondAttribute="trailing" id="1mk-jy-0MM"/>
+                                                <constraint firstItem="Ywk-BA-jYE" firstAttribute="top" secondItem="VST-6a-xZV" secondAttribute="top" constant="4" id="9og-ff-mT7"/>
+                                                <constraint firstItem="BsQ-eZ-pFo" firstAttribute="top" secondItem="VST-6a-xZV" secondAttribute="top" constant="4" id="Hn6-f3-a0J"/>
+                                                <constraint firstAttribute="trailing" secondItem="T07-cz-E3r" secondAttribute="trailing" id="LBp-zN-hrv"/>
+                                                <constraint firstItem="BsQ-eZ-pFo" firstAttribute="leading" secondItem="VST-6a-xZV" secondAttribute="leading" id="hRE-YW-8gc"/>
+                                                <constraint firstItem="T07-cz-E3r" firstAttribute="top" secondItem="VST-6a-xZV" secondAttribute="top" constant="4" id="njG-hg-AV6"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dayLabel" destination="BsQ-eZ-pFo" id="azr-l6-Fcb"/>
+                                            <outlet property="iconImage" destination="Ywk-BA-jYE" id="0Yw-xs-3QN"/>
+                                            <outlet property="tempAtDayLabel" destination="T07-cz-E3r" id="9V3-2n-Uya"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="H6R-Nx-CRd"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Gr1-IL-Moi"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="tab-ev-ba1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="12" id="1Nz-n5-KgQ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="h1B-TW-HYY" secondAttribute="trailing" constant="30" id="5M2-Z2-HLR"/>
                             <constraint firstItem="XMl-dp-vnE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="12" id="6Ze-a3-Sgs"/>
                             <constraint firstItem="SZh-mN-Kvi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="12" id="Bf9-p5-HC4"/>
                             <constraint firstItem="Gt3-S6-A5h" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="250" id="KUb-O8-NsH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XMl-dp-vnE" secondAttribute="trailing" constant="12" id="PKe-KV-IuK"/>
                             <constraint firstItem="SZh-mN-Kvi" firstAttribute="top" secondItem="XMl-dp-vnE" secondAttribute="bottom" constant="12" id="QT5-8k-dsr"/>
+                            <constraint firstItem="h1B-TW-HYY" firstAttribute="top" secondItem="tab-ev-ba1" secondAttribute="bottom" constant="12" id="QdQ-O6-ojz"/>
                             <constraint firstItem="XMl-dp-vnE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="12" id="eG8-M1-DQ7"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="h1B-TW-HYY" secondAttribute="bottom" constant="30" id="ek8-S5-f2v"/>
                             <constraint firstItem="Gt3-S6-A5h" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fan-fb-L7G"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="tab-ev-ba1" secondAttribute="trailing" constant="12" id="maA-RQ-WTn"/>
+                            <constraint firstItem="tab-ev-ba1" firstAttribute="top" secondItem="SZh-mN-Kvi" secondAttribute="bottom" constant="8" id="xCN-bh-SbX"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="SZh-mN-Kvi" secondAttribute="trailing" constant="12" id="ynP-kX-g6b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -254,6 +316,7 @@
                         <outlet property="activityIndicatorView" destination="Gt3-S6-A5h" id="ihb-AX-bT0"/>
                         <outlet property="cityLabel" destination="nuc-GU-7DY" id="pdz-7d-W1t"/>
                         <outlet property="cloudsLabel" destination="6hB-dL-rhV" id="Xa4-jr-B3H"/>
+                        <outlet property="dailyTableView" destination="tab-ev-ba1" id="YEf-4Y-heS"/>
                         <outlet property="descriptionLabel" destination="jLj-vI-i2D" id="1up-b7-40D"/>
                         <outlet property="forecastCollectionView" destination="SZh-mN-Kvi" id="EFF-rT-bkM"/>
                         <outlet property="humidityLabel" destination="KEI-bg-hQn" id="5Gs-qS-Am8"/>
